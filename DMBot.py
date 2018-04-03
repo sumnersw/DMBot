@@ -40,7 +40,6 @@ onJoinMessage = [
 async def on_ready():
     print('Logged in as')
     print(bot.user.name)
-    print(str(initiativeround))
     await bot.send_message(dicechannel, random.choice(onJoinMessage))
 
 
@@ -63,29 +62,26 @@ async def on_message(message):
 
     if message.content.lower().startswith("!initiative"):
         userID = message.author.id
-        print(userID)
         usercard = random.choice(deckOfCards)
         initiativeround.update({userID : usercard})
-        print(initiativeround)
         deckOfCards.remove(usercard)
-        initiativemessage = str("You drew a " + usercard)
+        initiativemessage = "You drew a " + usercard
         await bot.send_message(message.author, initiativemessage) 
         
 
     if message.content.lower().startswith("!reveal"):
         userID = message.author.id
         usercard = initiativeround.get(userID)
-        print(usercard)
         initiativeround.pop(userID)       
         initiativemessage = message.author.name + " drew a " + usercard
         await bot.send_message(initiativechannel, initiativemessage)
 
     if message.content.lower().startswith("!commands"):
         await bot.send_message(message.channel,"These are the list of commands for DM-Bot:\n")
-        await bot.send_message(message.channel,"!initiative  <Partial functionality>\n") 
+        await bot.send_message(message.channel,"!initiative\n") 
         await bot.send_message(message.channel,
            "     This command will draw a random card from a deck and message you with the result.\n")
-        await bot.send_message(message.channel,"!reveal  <Disabled>\n")
+        await bot.send_message(message.channel,"!reveal\n")
         await bot.send_message(message.channel,
            "     This command will reveal what your initiative card is to the general channel")
         await bot.send_message(message.channel,"!roll\n")
